@@ -88,7 +88,7 @@ export const adminRoutes = adminPaths.reduce((acc: TRoute[], item) => {
   return acc;
 }, []);
 
-//! had coded way
+//! Hard coded way
 // export const adminPaths = [
 //   {
 //     index: true,
