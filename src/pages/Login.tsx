@@ -25,6 +25,7 @@ const Login = () => {
       password: data.password,
     };
 
+    // use redux api
     const res = await login(userInfo).unwrap();
 
     // verify token
