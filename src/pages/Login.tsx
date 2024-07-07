@@ -1,5 +1,5 @@
 import { Button } from "antd";
-import { useForm } from "react-hook-form";
+import { FieldValues, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { useLoginMutation } from "../redux/features/auth/authApi";
@@ -23,7 +23,7 @@ const Login = () => {
 
   // console.log("error =>", isError);
 
-  const onSubmit = async (data) => {
+  const onSubmit = async (data: FieldValues) => {
     const toastId = toast.loading("Logging in..");
     try {
       const userInfo = {
