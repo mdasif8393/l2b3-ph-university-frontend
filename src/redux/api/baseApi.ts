@@ -12,9 +12,11 @@ import { RootState } from "../store";
 
 const baseQuery = fetchBaseQuery({
   baseUrl: "http://localhost:5000/api/v1",
+  // set cookie
   credentials: "include",
   // for send access token with every request
   prepareHeaders: (headers, { getState }) => {
+    // Get token from redux to call getState() which is main state
     const token = (getState() as RootState).auth.token;
 
     // set token in headers

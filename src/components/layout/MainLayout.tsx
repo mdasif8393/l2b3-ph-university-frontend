@@ -24,7 +24,7 @@ const { Header, Content } = Layout;
 //       },
 //       {
 //         key: "Create Student",
-//         label: <NavLink to="/admin/create-student">Create Student</NavLink>,
+// label: <NavLink to="/admin/create-student">Create Student</NavLink>,
 //       },
 //     ],
 //   },
