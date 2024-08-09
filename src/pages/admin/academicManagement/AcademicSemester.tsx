@@ -1,4 +1,5 @@
 import { Table, TableColumnsType, TableProps } from "antd";
+import { useState } from "react";
 import { useGetAllSemestersQuery } from "../../../redux/features/admin/academicManagement.api";
 import { TAcademicSemester } from "../../../types/academicManagement.type";
 
@@ -8,13 +9,13 @@ export type TTableData = Pick<
 >;
 
 const AcademicSemester = () => {
-  const { data: semesterData } = useGetAllSemestersQuery([
-    { name: "year", value: "2024" },
-  ]);
+  const [params, setParams] = useState([]);
+
+  const { data: semesterData } = useGetAllSemestersQuery(params);
 
   const tableData = semesterData?.data?.map(
     ({ name, _id, startMonth, endMonth, year }) => ({
-      _id,
+      key: _id,
       name,
       startMonth,
       endMonth,
@@ -25,43 +26,51 @@ const AcademicSemester = () => {
   const columns: TableColumnsType<TTableData> = [
     {
       title: "Name",
+      key: "name",
       dataIndex: "name",
       showSorterTooltip: { target: "full-header" },
       filters: [
         {
-          text: "Joe",
-          value: "Joe",
+          text: "Autumn",
+          value: "Autumn",
         },
         {
-          text: "Jim",
-          value: "Jim",
+          text: "Summar",
+          value: "Summar",
         },
         {
-          text: "Submenu",
-          value: "Submenu",
-          children: [
-            {
-              text: "Green",
-              value: "Green",
-            },
-            {
-              text: "Black",
-              value: "Black",
-            },
-          ],
+          text: "Fall",
+          value: "Fall",
         },
       ],
     },
     {
       title: "Year",
+      key: "year",
       dataIndex: "year",
+      filters: [
+        {
+          text: "2024",
+          value: "2024",
+        },
+        {
+          text: "2025",
+          value: "2025",
+        },
+        {
+          text: "2030",
+          value: "2030",
+        },
+      ],
     },
     {
       title: "Start Month",
+      key: "startMonth",
       dataIndex: "startMonth",
     },
     {
       title: "End Month",
+      key: "endMonth",
       dataIndex: "endMonth",
     },
   ];
@@ -72,7 +81,18 @@ const AcademicSemester = () => {
     sorter,
     extra
   ) => {
-    console.log("params", pagination, filters, sorter, extra);
+    if (extra.action === "filter") {
+      const queryParams = [];
+
+      filters.name?.forEach((item) =>
+        queryParams.push({ name: "name", value: item })
+      );
+      filters.year?.forEach((item) =>
+        queryParams.push({ name: "year", value: item })
+      );
+
+      setParams(queryParams);
+    }
   };
 
   return (
