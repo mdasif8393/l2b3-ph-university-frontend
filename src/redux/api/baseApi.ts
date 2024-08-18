@@ -28,7 +28,7 @@ const baseQuery = fetchBaseQuery({
   },
 });
 
-// create access token again use refresh token
+// create access token again use refresh token using custom base query
 const baseQueryWithRefreshToken: BaseQueryFn<
   FetchArgs,
   BaseQueryApi,

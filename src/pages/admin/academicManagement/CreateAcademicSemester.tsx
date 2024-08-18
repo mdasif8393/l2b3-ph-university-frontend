@@ -64,7 +64,7 @@ const CreateAcademicSemester = () => {
       <Col span={6}>
         <PHForm
           onSubmit={onSubmit}
-          resolver={zodResolver(academicSemesterSchema)}
+          resolver={zodResolver(academicSemesterSchema)} // form validation using zod and react hook form resolver
         >
           <PHSelect label="Name" name="name" options={semesterOptions} />
           <PHSelect label="Year" name="year" options={yearOptions} />
