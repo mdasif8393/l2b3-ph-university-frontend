@@ -1,5 +1,5 @@
-import { Button, Col, Divider, Row } from "antd";
-import { FieldValues, SubmitHandler } from "react-hook-form";
+import { Button, Col, Divider, Form, Input, Row } from "antd";
+import { Controller, FieldValues, SubmitHandler } from "react-hook-form";
 import PHDatePicker from "../../../components/form/PHDatePicker";
 import PHForm from "../../../components/form/PHForm";
 import PHInput from "../../../components/form/PHInput";
@@ -57,7 +57,7 @@ const studentDefaultValues = {
   gender: "male",
   contactNo: "2",
   emergencyContactNo: "0987654321",
-  email: "ravi3@example.com",
+  // email: "ravi3@example.com",
   avatar: "https://example.com/avatar.jpg",
   bloodGroup: "O+",
   presentAddress: "1234 Elm Street, Springfield, IL",
@@ -76,13 +76,15 @@ const studentDefaultValues = {
     contactNo: "1122334455",
     address: "7890 Pine Road, Springfield, IL",
   },
-  admissionSemester: "665816c07964f622098ebf0a",
-  academicDepartment: "66597130e664de029bd2a07e",
-  profileImg: "https://example.com/profile.jpg",
+  // admissionSemester: "665816c07964f622098ebf0a",
+  // academicDepartment: "66597130e664de029bd2a07e",
+  // profileImg: "https://example.com/profile.jpg",
 };
 
 const CreateStudent = () => {
   const [addStudent, { data, error }] = useAddStudentMutation();
+
+  console.log({ data, error });
 
   // make academic semester options
   const { data: sData, isLoading: sIsLoading } =
@@ -110,6 +112,7 @@ const CreateStudent = () => {
     };
     const formData = new FormData();
     formData.append("data", JSON.stringify(studentData));
+    formData.append("file", data.image);
     addStudent(formData);
   };
 
@@ -151,7 +154,19 @@ const CreateStudent = () => {
                 />
               </Col>
               <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
-                {/* picture */}
+                <Controller
+                  name="image"
+                  render={({ field: { onChange, value, ...field } }) => (
+                    <Form.Item label="Picture">
+                      <Input
+                        type="file"
+                        value={value?.fileName}
+                        {...field}
+                        onChange={(e) => onChange(e.target?.files?.[0])}
+                      />
+                    </Form.Item>
+                  )}
+                />
               </Col>
             </Row>
             <Divider>Contact Info.</Divider>
