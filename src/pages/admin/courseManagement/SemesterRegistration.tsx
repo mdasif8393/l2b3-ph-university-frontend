@@ -11,9 +11,8 @@ import { useAddRegisteredSemesterMutation } from "../../../redux/features/admin/
 import { TResponse } from "../../../types";
 
 const SemesterRegistration = () => {
-  const toastId = toast.loading("Creating...");
-
   const [addSemester] = useAddRegisteredSemesterMutation();
+
   const { data: academicSemester } = useGetAllSemestersQuery([
     { name: "sort", value: "year" },
   ]);
@@ -24,23 +23,24 @@ const SemesterRegistration = () => {
   }));
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+    const toastId = toast.loading("Creating...");
+
     const semesterData = {
       ...data,
       minCredit: Number(data.minCredit),
       maxCredit: Number(data.maxCredit),
     };
 
-    console.log(semesterData);
-
     try {
       const res = (await addSemester(semesterData)) as TResponse<any>;
+
       if (res.error) {
         toast.error(res.error.data.message, { id: toastId });
       } else {
-        toast.success("Academic Semester Created", { id: toastId });
+        toast.success("SemesterRegistration created", { id: toastId });
       }
     } catch (err) {
-      toast.error("Something went wrong", { id: toastId });
+      toast.error("SemesterRegistration went wrong", { id: toastId });
     }
   };
 
