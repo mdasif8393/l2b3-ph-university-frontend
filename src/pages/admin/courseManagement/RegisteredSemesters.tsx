@@ -1,6 +1,10 @@
 import { Button, Dropdown, Table, TableColumnsType, Tag } from "antd";
 import moment from "moment";
-import { useGetAllRegisteredSemestersQuery } from "../../../redux/features/admin/courseManagement";
+import { useState } from "react";
+import {
+  useGetAllRegisteredSemestersQuery,
+  useUpdateRegisteredSemesterMutation,
+} from "../../../redux/features/admin/courseManagement";
 import { TSemester } from "../../../types";
 export type TTableData = Pick<TSemester, "startDate" | "endDate" | "status">;
 
@@ -19,21 +23,31 @@ const items = [
   },
 ];
 
-const handleStatusDropDown = (data) => {
-  console.log(data);
-};
-
-const menuProps = {
-  items,
-  onClick: handleStatusDropDown,
-};
-
 const RegisteredSemesters = () => {
   const {
     data: semesterData,
     isLoading,
     isFetching,
   } = useGetAllRegisteredSemestersQuery(undefined);
+
+  const [semesterId, setSemesterId] = useState("");
+
+  const [updateSemesterStatus] = useUpdateRegisteredSemesterMutation();
+
+  const handleStatusUpdate = (data: any) => {
+    const updateData = {
+      id: semesterId,
+      data: {
+        status: data.key,
+      },
+    };
+    updateSemesterStatus(updateData);
+  };
+
+  const menuProps = {
+    items,
+    onClick: handleStatusUpdate,
+  };
 
   const tableData = semesterData?.data?.map(
     ({ academicSemester, _id, startDate, endDate, status }) => ({
@@ -84,10 +98,10 @@ const RegisteredSemesters = () => {
     {
       title: "Action",
       key: "x",
-      render: () => {
+      render: (item) => {
         return (
-          <Dropdown menu={menuProps}>
-            <Button>Update</Button>
+          <Dropdown menu={menuProps} trigger={["click"]}>
+            <Button onClick={() => setSemesterId(item.key)}>Update</Button>
           </Dropdown>
         );
       },
