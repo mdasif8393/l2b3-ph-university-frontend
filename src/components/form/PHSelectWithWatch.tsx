@@ -5,10 +5,14 @@ import { Controller, useFormContext, useWatch } from "react-hook-form";
 type TPHSelectProps = {
   label: string;
   name: string;
-  options: { value: string; label: string; disabled?: boolean }[] | undefined;
   disabled?: boolean;
   mode?: "multiple" | undefined;
-  onValueChange: React.Dispatch<React.SetStateAction<string>>;
+  options:
+    | {
+        value: string;
+        label: string;
+      }[]
+    | undefined;
 };
 
 const PHSelectWithWatch = ({
@@ -19,12 +23,9 @@ const PHSelectWithWatch = ({
   mode,
   onValueChange,
 }: TPHSelectProps) => {
-  const method = useFormContext();
-  const inputValue = useWatch({
-    control: method.control,
-    name,
-  });
+  const { control } = useFormContext();
 
+  const inputValue = useWatch({ control, name });
   useEffect(() => {
     onValueChange(inputValue);
   }, [inputValue]);

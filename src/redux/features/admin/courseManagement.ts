@@ -47,7 +47,6 @@ const courseManagementApi = baseApi.injectEndpoints({
     }),
     getAllCourses: builder.query({
       query: (args) => {
-        console.log(args);
         const params = new URLSearchParams();
 
         if (args) {
